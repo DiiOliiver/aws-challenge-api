@@ -20,7 +20,7 @@ export default [
     },
     rules: {
       "no-console": "off",
-      "no-unused-vars": "warn",
+      "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/explicit-module-boundary-types": "off",
       "prettier/prettier": "error",
