@@ -38,6 +38,6 @@ export const deviceSchema = yup.object().shape({
   status: yup
     .string()
     .trim()
-    .oneOf(["Ativo", "Inativo"], "Invalid status")
+    .oneOf(["active", "inactive"], "Invalid status")
     .required(),
 });
