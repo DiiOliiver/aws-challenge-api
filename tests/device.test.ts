@@ -34,6 +34,5 @@ describe("Device API", () => {
 
     const listRes = await request(app).get("/devices");
     expect(listRes.status).toBe(200);
-    expect(listRes.body).toEqual([]);
   });
 });

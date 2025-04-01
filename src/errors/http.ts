@@ -5,3 +5,11 @@ export class ServerError extends Error {
     this.stack = error?.stack;
   }
 }
+
+export class BadRequest extends Error {
+  constructor(error?: Error) {
+    super(error?.message);
+    this.name = "BadRequest";
+    this.stack = error?.stack;
+  }
+}
