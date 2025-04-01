@@ -1,6 +1,6 @@
 import request from "supertest";
-import app from "../src/app";
-import { AppDataSource } from "../src/config/ormconfig";
+import app from "../../src/app";
+import { AppDataSource } from "../../src/config/ormconfig";
 
 describe("Device API", () => {
   beforeAll(async () => {
@@ -21,7 +21,7 @@ describe("Device API", () => {
       category: 2,
       color: "Preto",
       partNumber: "A1234",
-      status: "Ativo",
+      status: "active",
     };
 
     const createRes = await request(app).post("/devices").send(newDevice);
