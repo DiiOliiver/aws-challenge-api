@@ -16,4 +16,8 @@ export class DeviceService {
     const id = Number(req.params["id"]);
     await DeviceRepository.delete(id);
   }
+
+  static async deleteList(req: Request): Promise<void> {
+    await DeviceRepository.delete(req.body.ids);
+  }
 }

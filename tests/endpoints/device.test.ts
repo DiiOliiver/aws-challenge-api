@@ -16,15 +16,25 @@ describe("Device API", () => {
   });
 
   it("should create, return list and delete a device", async () => {
+    const newCategory = {
+      name: `Smartphones Teste ${Math.floor(Math.random() * 1000)}`,
+    };
+
+    const createCategoryRes = await request(app).post("/categories").send(newCategory);
+    expect(createCategoryRes.status).toBe(201);
+
+    const categoryId = createCategoryRes.body.id
+
     const newDevice = {
       name: "iPhone 14 Teste",
-      category: 2,
+      category: categoryId,
       color: "Preto",
       partNumber: "A1234",
       status: "active",
     };
 
     const createRes = await request(app).post("/devices").send(newDevice);
+    console.log(createRes.body)
     expect(createRes.status).toBe(201);
 
     const deviceId = createRes.body.id;
@@ -34,5 +44,8 @@ describe("Device API", () => {
 
     const listRes = await request(app).get("/devices");
     expect(listRes.status).toBe(200);
+
+    const deleteCategoryRes = await request(app).delete(`/categories/${categoryId}`);
+    expect(deleteCategoryRes.status).toBe(204);
   });
 });

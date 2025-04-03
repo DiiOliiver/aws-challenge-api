@@ -4,6 +4,7 @@ import {
   createCategoryController,
   findAllCategoryController,
   deleteCategoryController,
+  deleteListCategoryController,
 } from "../controllers/categories";
 
 const router = express.Router();
@@ -11,5 +12,6 @@ const router = express.Router();
 router.get("/", adapt(findAllCategoryController));
 router.post("/", adapt(createCategoryController));
 router.delete("/:id", adapt(deleteCategoryController));
+router.post("/delete", adapt(deleteListCategoryController));
 
 export default router;

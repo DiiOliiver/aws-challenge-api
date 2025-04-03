@@ -7,9 +7,8 @@ export class ServerError extends Error {
 }
 
 export class BadRequest extends Error {
-  constructor(error?: Error) {
-    super(error?.message);
+  constructor(msg: string) {
+    super(msg);
     this.name = "BadRequest";
-    this.stack = error?.stack;
   }
 }

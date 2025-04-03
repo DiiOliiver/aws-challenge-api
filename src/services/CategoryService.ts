@@ -3,6 +3,8 @@ import { Category } from "../entities/Category";
 import { Request } from "express";
 import { DeviceRepository } from "../repositories/DeviceRepository";
 import { BadRequest } from "../errors/http";
+import { AppDataSource } from "../config/ormconfig";
+import { ok } from "../helpers/http";
 
 export class CategoryService {
   static async getAll(): Promise<Category[]> {
@@ -20,9 +22,36 @@ export class CategoryService {
       where: { category: { id } },
     });
     if (hasDevices > 0) {
-      const error = new Error("Unable to delete a category linked to devices");
-      throw new BadRequest(error);
+      throw new BadRequest("Unable to delete a category linked to devices");
     }
     await CategoryRepository.delete(id);
+  }
+
+  static async deleteList(req: Request) {
+    const queryRunner = AppDataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      for (const id of req.body.ids) {
+        const hasDevices = await DeviceRepository.count({
+          where: { category: { id } },
+        });
+
+        if (hasDevices > 0) {
+          throw new BadRequest("Unable to delete a category linked to devices");
+        }
+
+        await queryRunner.manager.delete("Category", id);
+      }
+
+      await queryRunner.commitTransaction();
+      return ok("Categories deleted successfully");
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
   }
 }
