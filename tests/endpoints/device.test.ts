@@ -1,20 +1,7 @@
 import request from "supertest";
 import app from "../../src/app";
-import { AppDataSource } from "../../src/config/ormconfig";
 
 describe("Device API", () => {
-  beforeAll(async () => {
-    if (!AppDataSource.isInitialized) {
-      await AppDataSource.initialize();
-      console.log("Banco conectado para testes");
-    }
-  });
-
-  afterAll(async () => {
-    await AppDataSource.destroy();
-    console.log("Banco desconectado após testes");
-  });
-
   it("should create, return list and delete a device", async () => {
     const newCategory = {
       name: `Smartphones Teste ${Math.floor(Math.random() * 1000)}`,
@@ -26,15 +13,13 @@ describe("Device API", () => {
     const categoryId = createCategoryRes.body.id
 
     const newDevice = {
-      name: "iPhone 14 Teste",
+      name: `iPhone 14 Teste ${Math.floor(Math.random() * 1000)}`,
       category: categoryId,
       color: "Preto",
-      partNumber: "A1234",
-      status: "active",
+      partNumber: `A123${Math.floor(Math.random() * 1000)}`,
     };
 
     const createRes = await request(app).post("/devices").send(newDevice);
-    console.log(createRes.body)
     expect(createRes.status).toBe(201);
 
     const deviceId = createRes.body.id;

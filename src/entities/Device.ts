@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
 import { Category } from "./Category";
 
-@Entity()
+@Entity("devices")
 export class Device {
   @PrimaryGeneratedColumn()
   id: number;
@@ -17,7 +17,4 @@ export class Device {
 
   @Column()
   partNumber: string;
-
-  @Column()
-  status: string;
 }

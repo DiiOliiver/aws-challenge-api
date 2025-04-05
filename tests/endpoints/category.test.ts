@@ -1,31 +1,18 @@
 import request from "supertest";
 import app from "../../src/app";
-import { AppDataSource } from "../../src/config/ormconfig";
 
 describe("Category API", () => {
-  beforeAll(async () => {
-    if (!AppDataSource.isInitialized) {
-      await AppDataSource.initialize();
-      console.log("Banco conectado para testes");
-    }
-  });
-
-  afterAll(async () => {
-    await AppDataSource.destroy();
-    console.log("Banco desconectado após testes");
-  });
-
   it("should create, return list and delete a category", async () => {
     const newCategory = {
-      name: "Smartphones Teste",
+      name: `Smartphones Teste ${Math.floor(Math.random() * 1000)}`,
     };
 
     const createRes = await request(app).post("/categories").send(newCategory);
     expect(createRes.status).toBe(201);
 
-    const deviceId = createRes.body.id;
+    const categoryId = createRes.body.id;
 
-    const deleteRes = await request(app).delete(`/categories/${deviceId}`);
+    const deleteRes = await request(app).delete(`/categories/${categoryId}`);
     expect(deleteRes.status).toBe(204);
 
     const listRes = await request(app).get("/categories");
@@ -36,7 +23,7 @@ describe("Category API", () => {
   it("should return 400 if trying to delete a category linked to devices", async () => {
     const categoryRes = await request(app)
       .post("/categories")
-      .send({ name: "Categoria Teste" });
+      .send({ name: `Smartphones Teste ${Math.floor(Math.random() * 1000)}` });
     expect(categoryRes.status).toBe(201);
 
     const categoryId = categoryRes.body.id;
@@ -44,11 +31,10 @@ describe("Category API", () => {
     const deviceRes = await request(app)
       .post("/devices")
       .send({
-        name: "Dispositivo Teste",
+        name: `Dispositivo Teste ${Math.floor(Math.random() * 1000)}`,
         category: categoryId,
         color: "black",
-        partNumber: "12345",
-        status: "active",
+        partNumber: `12345${Math.floor(Math.random() * 1000)}`,
       });
     expect(deviceRes.status).toBe(201);
 

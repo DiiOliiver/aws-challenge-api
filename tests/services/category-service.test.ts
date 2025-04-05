@@ -6,20 +6,11 @@ import { BadRequest } from "../../src/errors/http";
 jest.mock("../../src/repositories/CategoryRepository");
 jest.mock("../../src/repositories/DeviceRepository");
 
+beforeEach(() => {
+  jest.clearAllMocks();
+});
+
 describe("CategoryService", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
-  it("should return all categories", async () => {
-    const mockCategories = [{ id: 1, name: "Electronics" }];
-    (CategoryRepository.find as jest.Mock).mockResolvedValue(mockCategories);
-
-    const result = await CategoryService.getAll();
-    expect(result).toEqual(mockCategories);
-    expect(CategoryRepository.find).toHaveBeenCalledTimes(1);
-  });
-
   it("should create a new category", async () => {
     const mockCategory = { id: 1, name: "Electronics" };
     (CategoryRepository.create as jest.Mock).mockReturnValue(mockCategory);

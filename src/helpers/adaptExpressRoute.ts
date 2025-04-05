@@ -4,6 +4,6 @@ export const adaptExpressRoute: Adapter = (controller) => async (req, res) => {
   const { statusCode, data } = await controller.handle(req, res);
   const json = [200, 201, 204].includes(statusCode)
     ? data
-    : { error: data.message };
+    : { error: data.message, messages: data?.errors ?? [] };
   res.status(statusCode).json(json);
 };

@@ -20,7 +20,6 @@ describe("DeviceService", () => {
       name: "iPhone 14",
       color: "Black",
       partNumber: "A1234",
-      status: "Active",
       category: { id: 1 } as any,
     };
 

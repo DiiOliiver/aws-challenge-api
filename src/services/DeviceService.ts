@@ -1,10 +1,13 @@
 import { DeviceRepository } from "../repositories/DeviceRepository";
 import { Device } from "../entities/Device";
 import { Request } from "express";
+import { AppDataSource } from "../config/ormconfig";
 
 export class DeviceService {
   static async findAll(): Promise<Device[]> {
-    return await DeviceRepository.find();
+    return await AppDataSource.createQueryBuilder(Device, "devices")
+      .innerJoinAndSelect("devices.category", "category")
+      .getRawMany();
   }
 
   static async create(deviceData: Partial<Device>): Promise<Device> {

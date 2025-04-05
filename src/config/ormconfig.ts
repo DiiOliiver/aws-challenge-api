@@ -1,6 +1,8 @@
 import { DataSource } from "typeorm";
 import * as dotenv from "dotenv";
 import path from "path";
+import { Category } from "../entities/Category";
+import { Device } from "../entities/Device";
 
 dotenv.config();
 
@@ -14,7 +16,9 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  entities: [path.join(__dirname, `../entities/*.${extension}`)],
+  entities: isTestEnv
+    ? [Category, Device]
+    : [path.join(__dirname, `../entities/*.${extension}`)],
   migrations: [path.join(__dirname, `../migrations/*.${extension}`)],
   synchronize: false,
   logging: !isTestEnv,

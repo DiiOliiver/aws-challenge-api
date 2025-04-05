@@ -5,10 +5,19 @@ import { DeviceRepository } from "../repositories/DeviceRepository";
 import { BadRequest } from "../errors/http";
 import { AppDataSource } from "../config/ormconfig";
 import { ok } from "../helpers/http";
+import { Device } from "../entities/Device";
 
 export class CategoryService {
   static async getAll(): Promise<Category[]> {
-    return await CategoryRepository.find();
+    return await AppDataSource.createQueryBuilder(Category, "categories")
+      .leftJoinAndSelect(Device, "device", "device.category.id = categories.id")
+      .select([
+        "categories.id AS id",
+        "categories.name AS name",
+        "COUNT(device.id) AS total",
+      ])
+      .groupBy("categories.id")
+      .getRawMany();
   }
 
   static async create(data: Partial<Category>): Promise<Category> {

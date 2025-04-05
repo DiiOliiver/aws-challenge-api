@@ -7,6 +7,7 @@ export default {
   transform: {
     "^.+\\.ts$": "ts-jest"
   },
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
   coveragePathIgnorePatterns: [
     "/node_modules/",
     "/src/config/",

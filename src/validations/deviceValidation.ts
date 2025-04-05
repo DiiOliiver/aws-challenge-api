@@ -34,10 +34,19 @@ export const deviceSchema = yup.object().shape({
     )
     .required(),
   color: yup.string().trim().required(),
-  partNumber: yup.string().trim().required(),
-  status: yup
+  partNumber: yup
     .string()
     .trim()
-    .oneOf(["active", "inactive"], "Invalid status")
+    .test(
+      "unique-part-number",
+      "The given part number does not exist",
+      async (value) => {
+        if (!value) return false;
+        const existingPartNumber = await DeviceRepository.findOneBy({
+          partNumber: value,
+        });
+        return !existingPartNumber;
+      },
+    )
     .required(),
 });
