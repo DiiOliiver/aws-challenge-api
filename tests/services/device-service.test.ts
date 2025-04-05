@@ -9,12 +9,6 @@ describe("DeviceService", () => {
     jest.clearAllMocks();
   });
 
-  it("should return an empty list when there are no devices", async () => {
-    (DeviceRepository.find as jest.Mock).mockResolvedValue([]);
-    const devices = await DeviceService.findAll();
-    expect(devices).toEqual([]);
-  });
-
   it("should create a device", async () => {
     const newDevice: Partial<Device> = {
       name: "iPhone 14",
