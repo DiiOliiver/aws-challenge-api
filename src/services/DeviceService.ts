@@ -7,7 +7,7 @@ export class DeviceService {
   static async findAll(): Promise<Device[]> {
     return await AppDataSource.createQueryBuilder(Device, "devices")
       .innerJoinAndSelect("devices.category", "category")
-      .getRawMany();
+      .getMany();
   }
 
   static async create(deviceData: Partial<Device>): Promise<Device> {
